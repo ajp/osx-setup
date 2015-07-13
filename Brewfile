@@ -23,9 +23,9 @@ cask install dropbox
 cask install google-chrome
 cask install iterm2
 cask install path-finder
-case install textexpander
+cask install textexpander
 
-# PM & Communication Tools
+# PM Communication Tools
 cask install google-drive
 cask install google-hangouts
 cask install harvest
