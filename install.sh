@@ -12,13 +12,13 @@
 #curl -sS https://getcomposer.org/installer | php
 
 # Install Homebrew
-ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)""
 brew doctor
 brew update
 
 # Install RVM
 curl -sSL https://get.rvm.io | bash -s stable --ruby
-source .bash_profile
+source ~/.bash_profile
 gem install bundler
 
 ############
