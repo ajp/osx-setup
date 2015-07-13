@@ -34,7 +34,7 @@ brew tap homebrew/services
 ######
 # Install Cask
 ######
-brew caskroom/cask/brew-cask
+brew install caskroom/cask/brew-cask
 
 # Node
 brew install node
