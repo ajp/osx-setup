@@ -1,11 +1,11 @@
-tap 'caskroom/cask'
-tap 'homebrew/bundle'
-tap 'homebrew/services'
+tap caskroom/cask
+tap homebrew/bundle
+tap homebrew/services
 
 ######
 # Install Cask
 ######
-brew 'caskroom/cask/brew-cask'
+brew caskroom/cask/brew-cask
 
 # Node
 brew install node
@@ -16,7 +16,7 @@ cask install github
 brew install git-flow
 brew install bash-completion
 
-# The can't live withouts 
+# The cant live withouts 
 cask install 1password
 cask install alfred
 cask install dropbox
