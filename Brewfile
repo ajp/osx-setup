@@ -1,99 +1,95 @@
-tap caskroom/cask
-tap homebrew/bundle
-tap homebrew/services
+tap 'caskroom/cask'
+tap 'homebrew/bundle'
+tap 'homebrew/services'
 
-######
-# Install Cask
-######
-brew caskroom/cask/brew-cask
-
+brew 'caskroom/cask/brew-cask'
 # Node
-brew install node
+brew 'node'
 
-# Git 
-cask install git
-cask install github
-brew install git-flow
-brew install bash-completion
+# Git
+cask 'git'
+cask 'github'
+brew 'git-flow'
+brew 'bash-completion'
 
-# The cant live withouts 
-cask install 1password
-cask install alfred
-cask install dropbox
-cask install google-chrome
-cask install iterm2
-cask install path-finder
-cask install textexpander
+# The can't live withouts
+cask '1password'
+cask 'alfred'
+cask 'dropbox'
+cask 'google-chrome'
+cask 'iterm2'
+cask 'path-finder'
+cask 'textexpander'
 
 # PM Communication Tools
-cask install google-drive
-cask install google-hangouts
-cask install harvest
-cask install slack
-cask install screenhero
-cask install screenflow
-cask install skype
+cask 'google-drive'
+cask 'google-hangouts'
+cask 'harvest'
+cask 'slack'
+cask 'screenhero'
+cask 'screenflow'
+cask 'skype'
 
 # Development Tools
-cask install codebox
-cask install kaleidoscope
-cask install licecap
-cask install phpstorm
-cask install sublime-text
-cask install sequel-pro
-cask install transmit
-cask install tower
+cask 'codebox'
+cask 'kaleidoscope'
+cask 'licecap'
+cask 'phpstorm'
+cask 'sublime-text'
+cask 'sequel-pro'
+cask 'transmit'
+cask 'tower'
 
 # Virtual Machine Things
-
-cask install vagrant
-cask install vagrant-manager
-cask install virtualbox
-cask install vmware-fusion
+cask 'vagrant'
+cask 'vagrant-manager'
+cask 'virtualbox'
+cask 'vmware-fusion'
 
 # Web Dev Tools
-cask install codebox
-cask install imageoptim
-cask install paparazzi
-cask install xscope
-cask install livereload
+cask 'codebox'
+cask 'imageoptim'
+cask 'paparazzi'
+cask 'xscope'
+cask 'livereload'
 
 # Design Tools
-cask install adobe-creative-cloud
-cask install omnigraffle
+cask 'adobe-creative-cloud'
+cask 'omnigraffle'
 
 # Menu bar apps
-cask install bartender
-cask install delibar
-cask install flux
-cask install hazel
+cask 'bartender'
+cask 'delibar'
+cask 'flux'
+cask 'hazel'
 
 # Personal, Blogging, etc.
-cask install evernote
-cask install dayone-cli
-cask install netnewswire
+cask 'evernote'
+cask 'dayone-cli'
+cask 'netnewswire'
 
 # Backup and Sync Software
-cask install arq
-cask install bittorrent-sync
-cask install daisydisk
-cask install doxie
+cask 'arq'
+cask 'bittorrent-sync'
+cask 'daisydisk'
+cask 'doxie'
 
 # Media and Downloading
-cask install 4k-video-downloader
-cask install airserver
-cask install airparrot
-cask install airfoil
-cask install calibre
-cask install plex-home-theater
-cask install plex-media-server
-cask install send-to-kindle
-cask install transmission
+cask '4k-video-downloader'
+cask 'airserver'
+cask 'airparrot'
+cask 'airfoil'
+cask 'calibre'
+cask 'plex-home-theater'
+cask 'plex-media-server'
+cask 'send-to-kindle'
+cask 'steam'
+cask 'transmission'
 
 # Utilities
-cask install istat-menus
-cask install istat-server
-cask install superduper
-cask install caffeine
+cask 'istat-menus'
+cask 'istat-server'
+cask 'superduper'
+cask 'caffeine'
 
-brew install wget
+brew 'wget'
