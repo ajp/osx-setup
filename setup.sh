@@ -166,7 +166,7 @@ else
 fi
 
 fancy_echo "Running Homebrew doctor ..."
-#brew doctor
+brew doctor
 
 fancy_echo "Updating Homebrew formulas ..."
 brew update
@@ -180,7 +180,7 @@ brew_install_or_upgrade 'zsh'
 
 fancy_echo "Installing OhMyZsh ..."
 # Install OhMyZsh
-#curl -L http://install.ohmyz.sh | sh	
+curl -L http://install.ohmyz.sh | sh	
 
 # Install Homebrew Bundle
 fancy_echo "Tapping Homebrew Bundle (homebrew/bundle) ..."
