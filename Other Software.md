@@ -1,3 +1,10 @@
+# Additional Apps to install
+
+* OmniGraffle
+* Bit TorrenT Sync
+
+
+
 # Mac App Store Apps to install
 
 * Blackmagic Disk Speed Test

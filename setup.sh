@@ -1,12 +1,12 @@
 #!/bin/sh
 
 #
-# Heavily based on thoughtbot's excellent laptop script
+# HBased on thoughtbot's excellent laptop script with additional help from
+# monfresh, 18F, Matt Stauffer and more.
 # 
-
 ###########################################################
 # Helper functions
-##################
+#
 fancy_echo() {
   local fmt="$1"; shift
 
@@ -14,25 +14,24 @@ fancy_echo() {
   printf "\n$fmt\n" "$@"
 }
 
-append_to_zshrc() {
-  local text="$1" zshrc
-  local skip_new_line="${2:-0}"
+append_to_file() {
+  local file="$1"
+  local text="$2"
 
-  if [ -w "$HOME/.zshrc.local" ]; then
-    zshrc="$HOME/.zshrc.local"
-  else
-    zshrc="$HOME/.zshrc"
+  if [ "$file" = "$HOME/.zshrc" ]; then
+    if [ -w "$HOME/.zshrc.local" ]; then
+      file="$HOME/.zshrc.local"
+    else
+      file="$HOME/.zshrc"
+    fi
   fi
 
-  if ! grep -Fqs "$text" "$zshrc"; then
-    if [ "$skip_new_line" -eq 1 ]; then
-      printf "%s\n" "$text" >> "$zshrc"
-    else
-      printf "\n%s\n" "$text" >> "$zshrc"
-    fi
+  if ! grep -Fqs "$text" "$file"; then
+    printf "\n%s\n" "$text" >> "$file"
   fi
 }
 
+# shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
 set -e
@@ -46,7 +45,7 @@ if [ ! -f "$HOME/.zshrc" ]; then
 fi
 
 # shellcheck disable=SC2016
-append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
+append_to_file "$HOME/.zshrc" 'export PATH="$HOME/.bin:$PATH"'
 
 case "$SHELL" in
   */zsh) : ;;
@@ -66,28 +65,56 @@ brew_install_or_upgrade() {
     fi
   else
     fancy_echo "Installing %s ..." "$1"
-    brew "$@"
+    brew install "$@"
   fi
 }
 
 brew_is_installed() {
-  local name="$(brew_expand_alias "$1")"
-
-  brew list -1 | grep -Fqx "$name"
+  brew list -1 | grep -Fqx "$1"
 }
 
 brew_is_upgradable() {
-  local name="$(brew_expand_alias "$1")"
+  ! brew outdated --quiet "$1" >/dev/null
+}
 
-  ! brew outdated --quiet "$name" >/dev/null
+brew_tap_is_installed() {
+  brew tap | grep -Fqx "$1"
 }
 
 brew_tap() {
-  brew tap "$1" 2> /dev/null
+  if ! brew_tap_is_installed "$1"; then
+    fancy_echo "Tapping $1..."
+    brew tap "$1" 2> /dev/null
+  fi
 }
 
 brew_expand_alias() {
   brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_cask_expand_alias() {
+  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_cask_is_installed() {
+  local NAME
+  NAME=$(brew_cask_expand_alias "$1")
+  brew cask list -1 | grep -Fqx "$NAME"
+}
+
+app_is_installed() {
+  local app_name
+  app_name=$(echo "$1" | cut -d'-' -f1)
+  find /Applications -iname "$app_name*" -maxdepth 1 | egrep '.*' > /dev/null
+}
+
+brew_cask_install() {
+  if app_is_installed "$1" || brew_cask_is_installed "$1"; then
+    fancy_echo "$1 is already installed. Skipping..."
+  else
+    fancy_echo "Installing $1..."
+    brew cask install "$@"
+  fi
 }
 
 brew_launchctl_restart() {
@@ -106,17 +133,25 @@ brew_launchctl_restart() {
 }
 
 gem_install_or_update() {
-  if gem list "$1" --installed > /dev/null; then
+  if gem list "$1" | grep "^$1 ("; then
     fancy_echo "Updating %s ..." "$1"
     gem update "$@"
   else
     fancy_echo "Installing %s ..." "$1"
     gem install "$@"
-    rbenv rehash
   fi
 }
+
 # End of Helper functions
 ###########################################################
+
+
+
+
+
+###########################
+# Let's install some things
+###########################
 
 # Install Homebrew
 if ! command -v brew >/dev/null; then
@@ -124,12 +159,8 @@ if ! command -v brew >/dev/null; then
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
-    append_to_zshrc '# recommended by brew doctor'
-
     # shellcheck disable=SC2016
-    append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
-
-    export PATH="/usr/local/bin:$PATH"
+    append_to_file "$HOME/.zshrc" 'export PATH="/usr/local/bin:$PATH"'
 else
   fancy_echo "Homebrew already installed. Skipping ..."
 fi
@@ -140,6 +171,9 @@ fancy_echo "Running Homebrew doctor ..."
 fancy_echo "Updating Homebrew formulas ..."
 brew update
 
+fancy_echo "Installing Homebrew services ..."
+brew_tap 'homebrew/services'
+
 # Install zsh
 fancy_echo "Installing Zshell ..."
 brew_install_or_upgrade 'zsh'
@@ -149,27 +183,32 @@ fancy_echo "Installing OhMyZsh ..."
 #curl -L http://install.ohmyz.sh | sh	
 
 # Install Homebrew Bundle
-fancy_echo "Tapping Homebrew Bundle ..."
+fancy_echo "Tapping Homebrew Bundle (homebrew/bundle) ..."
 brew_tap 'homebrew/bundle'
 
 fancy_echo "Running Brewfile ..."
 brew bundle
+brew cask alfred
+fancy_echo "Brewfile cleanup ..."
+brew cleanup
+
+# Install Casks, if you want a separate Caskfile
+#fancy_echo "Installing Casks ..."
+#brew cask install $(cat Caskfile|grep -v "#")
 
 # Install RVM and latest stable ruby
 fancy_echo "Installing RVM and latest stable ruby"
 curl -sSL https://get.rvm.io | bash -s stable --ruby
 source ~/.rvm/scripts/rvm
+source ~/.zshrc
 
 # Update gems and install basic gems
+fancy_echo 'Updating Rubygems...'
 gem update --system
-gem_install_or_update 'bundler'
+gem_install_or_update $(cat Gemfile|grep -v "#")
 
 #Install a bunch of Node.js packages
-npm install -g bower
-npm install -g yo
-npm install node-sass
-npm install node-bourbon
-npm install node-neat
+npm install $(cat Nodefile|grep -v "#")
 
-
+fancy_echo 'Wrap it up ...'
 

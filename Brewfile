@@ -10,7 +10,6 @@ brew 'node'
 cask 'git'
 cask 'github'
 brew 'git-flow'
-brew 'bash-completion'
 
 # The can't live withouts
 cask '1password'
@@ -55,7 +54,6 @@ cask 'livereload'
 
 # Design Tools
 cask 'adobe-creative-cloud'
-cask 'omnigraffle'
 
 # Menu bar apps
 cask 'bartender'
@@ -70,7 +68,6 @@ cask 'netnewswire'
 
 # Backup and Sync Software
 cask 'arq'
-cask 'bittorrent-sync'
 cask 'daisydisk'
 cask 'doxie'
 
