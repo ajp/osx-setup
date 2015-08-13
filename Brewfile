@@ -93,5 +93,6 @@ cask 'istat-server'
 cask 'superduper'
 cask 'caffeine'
 cask 'moom'
+cask 'opendns-updater'
 
 brew 'wget'
