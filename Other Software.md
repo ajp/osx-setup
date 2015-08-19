@@ -4,7 +4,6 @@
 * [JollyFastVNC](http://www.jinx.de/JollysFastVNC.html) - [Download](http://www.jinx.de/JollysFastVNC_files/JollysFastVNC.current.dmg)
 * [OmniGraffle](https://www.omnigroup.com/omnigraffle) - [Download](https://www.omnigroup.com/download/latest/omnigraffle)
 
-
 # Mac App Store Apps to install
 
 * Blackmagic Disk Speed Test
