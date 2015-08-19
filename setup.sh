@@ -188,7 +188,6 @@ brew_tap 'homebrew/bundle'
 
 fancy_echo "Running Brewfile ..."
 brew bundle
-brew cask alfred
 fancy_echo "Brewfile cleanup ..."
 brew cleanup
 
@@ -208,7 +207,6 @@ gem update --system
 gem_install_or_update $(cat Gemfile|grep -v "#")
 
 #Install a bunch of Node.js packages
-npm install $(cat Nodefile|grep -v "#")
+npm install -g $(cat Nodefile|grep -v "#")
 
 fancy_echo 'Wrap it up ...'
-
