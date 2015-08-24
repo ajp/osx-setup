@@ -34,6 +34,7 @@ cask 'skype'
 
 # Development Tools
 cask 'codebox'
+cask 'firefox'
 cask 'kaleidoscope'
 cask 'licecap'
 cask 'phpstorm'
