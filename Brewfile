@@ -15,6 +15,7 @@ brew 'git-flow'
 # The can't live withouts
 cask '1password'
 cask 'alfred'
+cask 'bittorrent-sync'
 cask 'dropbox'
 cask 'google-chrome'
 cask 'iterm2'
