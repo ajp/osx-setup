@@ -4,6 +4,7 @@ tap 'homebrew/bundle'
 tap 'homebrew/services'
 
 brew 'caskroom/cask/brew-cask'
+brew 'mackup'
 # Node
 brew 'node'
 
@@ -47,6 +48,7 @@ cask 'transmit'
 cask 'tower'
 
 # Virtual Machine Things
+cask 'otto'
 cask 'vagrant'
 cask 'vagrant-manager'
 cask 'virtualbox'
@@ -91,6 +93,10 @@ cask 'steam'
 cask 'transmission'
 cask 'vlc'
 
+# Craft CMS development
+tap 'rsanchez/homebrew-craft-cli'
+brew 'craft-cli'
+
 # Utilities
 cask 'istat-menus'
 cask 'istat-server'
@@ -99,5 +105,6 @@ cask 'caffeine'
 cask 'moom'
 cask 'opendns-updater'
 cask 'rescuetime'
+cask 'selfcontrol'
 
 brew 'wget'

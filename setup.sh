@@ -1,8 +1,10 @@
 #!/bin/sh
 
 #
-# HBased on thoughtbot's excellent laptop script with additional help from
+# Based on thoughtbot's excellent laptop script with additional help from
 # monfresh, 18F, Matt Stauffer and more.
+# References:
+# 
 # 
 ###########################################################
 # Helper functions
@@ -92,15 +94,8 @@ brew_expand_alias() {
   brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
 }
 
-brew_cask_expand_alias() {
-  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
-}
 
-brew_cask_is_installed() {
-  local NAME
-  NAME=$(brew_cask_expand_alias "$1")
-  brew cask list -1 | grep -Fqx "$NAME"
-}
+
 
 app_is_installed() {
   local app_name
@@ -108,14 +103,7 @@ app_is_installed() {
   find /Applications -iname "$app_name*" -maxdepth 1 | egrep '.*' > /dev/null
 }
 
-brew_cask_install() {
-  if app_is_installed "$1" || brew_cask_is_installed "$1"; then
-    fancy_echo "$1 is already installed. Skipping..."
-  else
-    fancy_echo "Installing $1..."
-    brew cask install "$@"
-  fi
-}
+
 
 brew_launchctl_restart() {
   local name="$(brew_expand_alias "$1")"
@@ -139,6 +127,48 @@ gem_install_or_update() {
   else
     fancy_echo "Installing %s ..." "$1"
     gem install "$@"
+  fi
+}
+
+# 
+# Homebrew cask helper functions
+#
+brew_cask_expand_alias() {
+  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_cask_is_installed() {
+  local NAME=$(brew_cask_expand_alias "$1")
+  brew cask list -1 | grep -Fqx "$NAME"
+}
+
+brew_cask_install() {
+  if ! brew_cask_is_installed "$1"; then
+    brew cask install "$@"
+  fi
+}
+
+brew_cask_install_or_upgrade() {
+  if brew_cask_is_installed "$1"; then
+    echo "$1 is already installed, brew cask upgrade is not yet implemented"
+  else
+    brew cask install "$@"
+  fi
+}
+
+#
+# Git Clone or Pull
+#
+git_clone_or_pull() {
+  local REPOSRC=$1
+  local LOCALREPO=$2
+  local LOCALREPO_VC_DIR=$LOCALREPO/.git
+  if [[ ! -d "$LOCALREPO_VC_DIR" ]]; then
+    git clone --recursive $REPOSRC $LOCALREPO
+  else
+    pushd $LOCALREPO
+    git pull $REPOSRC && git submodule update --init --recursive
+    popd
   fi
 }
 
@@ -171,7 +201,7 @@ brew doctor
 fancy_echo "Updating Homebrew formulas ..."
 brew update
 
-fancy_echo "Installing Homebrew services ..."
+fancy_echo "Tapping Homebrew services (homebrew/services) ..."
 brew_tap 'homebrew/services'
 
 # Install zsh
@@ -188,6 +218,7 @@ brew_tap 'homebrew/bundle'
 
 fancy_echo "Running Brewfile ..."
 brew bundle
+
 fancy_echo "Brewfile cleanup ..."
 brew cleanup
 

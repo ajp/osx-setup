@@ -4,6 +4,16 @@ node-sass
 node-bourbon
 node-neat
 gulp
+gulp-autoprefixer
+gulp-compass
+gulp-concat
+gulp-cssfmt
+gulp-livereload
+gulp-minify-css
+gulp-rename
+gulp-sass
+gulp-uglify
+gulp-watch
 grunt
 cssfmt
-gulp-cssfmt
+normalize.css
