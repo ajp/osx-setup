@@ -18,5 +18,3 @@
 * OSX Yosemite Server
 * Pixelmator
 * Reeder
-* SSH Tunnel
-* Sketch 3

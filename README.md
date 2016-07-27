@@ -6,23 +6,28 @@ Additional ideas from 18F/laptop and monfresh/laptop who also based theirs on th
 
 ## References:
 
-[Max OS X Setup Guide](http://sourabhbajaj.com/mac-setup/)
-	https://github.com/sb2nov/mac-setup
-[thoughtbot/Laptop](https://github.com/thoughtbot/laptop)
-[18f/laptop](https://github.com/18F/laptop)
-[monfresh/laptop](https://github.com/monfresh/laptop)
-
+* [thoughtbot/Laptop](https://github.com/thoughtbot/laptop)
+* [18f/laptop](https://github.com/18F/laptop)
+* [monfresh/laptop](https://github.com/monfresh/laptop)
+* [Max OS X Setup Guide](http://sourabhbajaj.com/mac-setup/) [GitBook](https://github.com/sb2nov/mac-setup)
+* https://github.com/jonasrosland/osx-bootstrap
 ### Notes
 
 * Script is currently compatible with OS X Yosemite.
 
-### Things this script will do:
+### Steps:
 
 1. Install Xcode Command Line Tools
 	xcode-select --install
-2. Install Homebrew
+2. Install Homebrew and Homebrew Cask
+2. Install zsh and OhMyZsh
 3. Install Git
 4. Install RVM
+5. Install NodeJS and NPM
+6. Install Brews from Brewfile
+7. Install Casks from Caskfile
+8. Install Gems from Gemfile
+9. Install Node packages from Nodefile
 
 ### To Do Items / Roadmap
 

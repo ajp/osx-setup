@@ -1,0 +1,175 @@
+# Taps
+tap 'homebrew/services'
+tap 'homebrew/dupes'
+tap 'homebrew/versions'
+tap 'homebrew/bundle'
+
+# Git
+brew 'git'
+
+# Brews
+brew 'autojump'
+brew 'mackup'
+brew 'mas'
+brew 'the_silver_searcher'
+brew 'vim'
+brew 'wget'
+brew 'zsh-completions'
+
+# Cask Taps
+tap 'caskroom/cask'
+tap 'caskroom/versions'
+
+# Install Homebrew Cask
+brew 'caskroom/cask/brew-cask'
+
+# Most Importants
+cask '1password'
+cask 'alfred'
+cask 'dropbox'
+
+# Also Important
+cask 'bittorrent-sync'
+cask 'flux'
+cask 'hazel'
+cask 'google-chrome'
+cask 'iterm2'
+cask 'path-finder'
+cask 'textexpander'
+
+# Quicklook helpers
+cask 'qlmarkdown'
+
+# Menu Bars
+cask 'bartender'
+cask 'istat-menus'
+cask 'istat-server'
+
+# Backup and Sync Software
+cask 'arq'
+cask 'backblaze'
+cask 'carbon-copy-cloner'
+cask 'superduper'
+cask 'timemachineeditor'
+
+# Utilities
+cask 'appcleaner'
+cask 'astrill'
+cask 'cleanmymac'
+cask 'coconutbattery'
+cask 'daisydisk'
+cask 'diskmaker-x'
+cask 'fluid'
+cask 'jollyfastvnc'
+cask 'keepingyouawake'
+cask 'malwarebytes-anti-malware'
+cask 'moom'
+cask 'opendns-updater'
+cask 'ssh-tunnel-manager'
+
+# Productivity and Focus
+cask 'focus'
+cask 'rescuetime'
+cask 'selfcontrol'
+
+# Communication Tools
+cask 'fantastical'
+cask 'google-drive'
+cask 'google-hangouts'
+cask 'joinme'
+cask 'mailplane'
+cask 'polymail'
+cask 'slack'
+cask 'screenhero'
+cask 'skype'
+cask 'zoomus'
+
+# Virtual Machine Things
+cask 'vagrant'
+cask 'vagrant-manager'
+cask 'virtualbox'
+cask 'vmware-fusion'
+
+# Web Development Tools
+cask 'codekit'
+cask 'dash'
+cask 'firefox'
+cask 'github-desktop'
+cask 'imagealpha'
+cask 'imageoptim'
+cask 'livereload'
+cask 'kaleidoscope'
+cask 'licecap'
+cask 'macgdbp'
+cask 'navicat'
+cask 'paparazzi'
+cask 'phpstorm'
+cask 'screaming-frog-seo-spider'
+cask 'sitesucker'
+cask 'sequel-pro'
+cask 'sublime-text3'
+cask 'transmit'
+cask 'tower'
+cask 'xscope'
+
+# Design Tools
+cask 'adobe-creative-cloud'
+cask 'omnigraffle'
+cask 'omnioutliner'
+cask 'omnifocus'
+cask 'sketch'
+cask 'sketchup'
+
+# Personal, Blogging, etc.
+cask 'evernote'
+cask 'doxie'
+cask 'dayone-cli'
+cask 'mou'
+cask 'netnewswire'
+cask 'shiori'
+
+# Video, Photos, Books, and Downloading
+cask '4k-video-downloader'
+cask '4k-youtube-to-mp3'
+cask 'airfoil'
+cask 'airparrot'
+cask 'airserver'
+cask 'audiobookbinder'
+cask 'calibre'
+cask 'gopro'
+cask 'handbrake'
+cask 'helium'
+cask 'iphoto-library-manager'
+cask 'kindle'
+cask 'plex-home-theater'
+cask 'plex-media-server'
+cask 'powerphotos'
+cask 'send-to-kindle'
+cask 'screenflow'
+cask 'spotify'
+cask 'transmission'
+cask 'vlc'
+
+# Usenet releated tools
+brew 'sickbeard'
+brew 'mkvtoolnix'
+cask 'makemkv'
+cask 'mkvtools'
+cask 'macpar-deluxe'
+
+# Pebble SDK
+brew 'pebble/pebble-sdk/pebble-sdk'
+
+# Games and Fun things
+brew 'ckan'
+cask 'fission'
+cask 'gog-downloader'
+cask 'gog-galaxy'
+cask 'google-earth-pro'
+cask 'iexplorer'
+cask 'image2icon'
+cask 'openemu'
+cask 'makeiphoneringtone'
+cask 'steam'
+
+

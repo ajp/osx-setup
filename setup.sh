@@ -132,6 +132,7 @@ gem_install_or_update() {
 
 # 
 # Homebrew cask helper functions
+# https://github.com/thoughtbot/laptop/wiki#homebrew-cask
 #
 brew_cask_expand_alias() {
   brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
@@ -151,6 +152,7 @@ brew_cask_install() {
 brew_cask_install_or_upgrade() {
   if brew_cask_is_installed "$1"; then
     echo "$1 is already installed, brew cask upgrade is not yet implemented"
+    brew cask install --force "$@"
   else
     brew cask install "$@"
   fi
@@ -158,6 +160,7 @@ brew_cask_install_or_upgrade() {
 
 #
 # Git Clone or Pull
+# https://github.com/thoughtbot/laptop/wiki#git
 #
 git_clone_or_pull() {
   local REPOSRC=$1
@@ -185,59 +188,97 @@ git_clone_or_pull() {
 
 # Install Homebrew
 if ! command -v brew >/dev/null; then
-  fancy_echo "Installing Homebrew ..."
+  fancy_echo "Homebrew: Installing ..."
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
     # shellcheck disable=SC2016
     append_to_file "$HOME/.zshrc" 'export PATH="/usr/local/bin:$PATH"'
 else
-  fancy_echo "Homebrew already installed. Skipping ..."
+  fancy_echo "Homebrew: already installed. Skipping ..."
 fi
 
-fancy_echo "Running Homebrew doctor ..."
-brew doctor
-
-fancy_echo "Updating Homebrew formulas ..."
+# Update Homebrew formulas
+fancy_echo "Homebrew: Updating formulas ..."
 brew update
 
-fancy_echo "Tapping Homebrew services (homebrew/services) ..."
+
+fancy_echo "Homebrew: Tapping services (homebrew/services) ..."
 brew_tap 'homebrew/services'
 
 # Install zsh
-fancy_echo "Installing Zshell ..."
+fancy_echo "zsh: Installing Zshell ..."
 brew_install_or_upgrade 'zsh'
+brew_install_or_upgrade 'zsh-completions'
 
-fancy_echo "Installing OhMyZsh ..."
+fancy_echo "zsh: Installing OhMyZsh ..."
 # Install OhMyZsh
 curl -L http://install.ohmyz.sh | sh	
 
-# Install Homebrew Bundle
-fancy_echo "Tapping Homebrew Bundle (homebrew/bundle) ..."
-brew_tap 'homebrew/bundle'
+fancy_echo "zsh: Adding Tab Completion for Homebrew"
+ln -s "$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh" /usr/local/share/zsh/site-functions
 
-fancy_echo "Running Brewfile ..."
-brew bundle
+#
+# Install Homebrew Formulas from Brewfile
+#
+if [ -f "Brewfile.local" ]; then
+  fancy_echo "Homebrew: Running Brewfile ..."
+  . "$HOME/Brewfile.local"
+fi
 
-fancy_echo "Brewfile cleanup ..."
+if [ -f "Caskfile.local" ]; then
+  fancy_echo "Homebrew Cask: Running Caskfile ..."
+  . "$HOME/Caskfile.local"
+fi
+
+fancy_echo "Homebrew: Cleanup ..."
 brew cleanup
 
-# Install Casks, if you want a separate Caskfile
-#fancy_echo "Installing Casks ..."
-#brew cask install $(cat Caskfile|grep -v "#")
-
+#
 # Install RVM and latest stable ruby
-fancy_echo "Installing RVM and latest stable ruby"
-curl -sSL https://get.rvm.io | bash -s stable --ruby
+#
+if ! command -v rbenv >/dev/null; then
+  if ! command -v rvm >/dev/null; then
+    fancy_echo 'Installing RVM and the latest Ruby...'
+    curl -L https://get.rvm.io | bash -s stable --ruby --auto-dotfiles --autolibs=enable
+    . ~/.rvm/scripts/rvm
+  else
+    local_version="$(rvm -v 2> /dev/null | awk '$2 != ""{print $2}')"
+    latest_version="$(curl -s https://raw.githubusercontent.com/wayneeseguin/rvm/stable/VERSION)"
+    if [ "$local_version" != "$latest_version" ]; then
+      fancy_echo 'Upgrading RVM...'
+      rvm get stable --auto-dotfiles --autolibs=enable --with-gems="bundler"
+    else
+      fancy_echo "Already using the latest version of RVM. Skipping..."
+    fi
+  fi
+fi
+
 source ~/.rvm/scripts/rvm
 source ~/.zshrc
 
 # Update gems and install basic gems
-fancy_echo 'Updating Rubygems...'
+fancy_echo 'Ruby: Updating gems...'
 gem update --system
-gem_install_or_update $(cat Gemfile|grep -v "#")
 
-#Install a bunch of Node.js packages
-npm install -g $(cat Nodefile|grep -v "#")
+fancy_echo 'Ruby: Running Gemfile...'
+gem_install_or_update $(cat Gemfile.local|grep -v "#")
+
+#
+# NODE: Install a bunch of Node.js packages
+#
+fancy_echo 'Node: Install Node.js'
+brew_install_or_upgrade 'node'
+
+if [ -f "Nodefile.local" ]; then
+  fancy_echo "Node: Running Nodefile ..."
+  . "$HOME/Nodefile.local"
+fi
+
+fancy_echo 'Running Local customizations'
+if [ -f "$HOME/.laptop.local" ]; then
+  . "$HOME/.laptop.local"
+fi
+
 
 fancy_echo 'Wrap it up ...'
