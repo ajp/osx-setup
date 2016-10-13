@@ -1,14 +1,9 @@
 #!/bin/sh
 
-#
-# Based on thoughtbot's excellent laptop script with additional help from
-# monfresh, 18F, Matt Stauffer and more.
-# References:
-# 
-# 
 ###########################################################
 # Helper functions
-#
+# - 18F/laptop
+###############
 fancy_echo() {
   local fmt="$1"; shift
 
@@ -28,7 +23,7 @@ append_to_file() {
     fi
   fi
 
-  if ! grep -Fqs "$text" "$file"; then
+  if ! grep -qs "^$text$" "$file"; then
     printf "\n%s\n" "$text" >> "$file"
   fi
 }
@@ -57,6 +52,17 @@ case "$SHELL" in
     ;;
 esac
 
+
+
+app_is_installed() {
+  local app_name
+  app_name=$(echo "$1" | cut -d'-' -f1)
+  find /Applications -iname "$app_name*" -maxdepth 1 | egrep '.*' > /dev/null
+}
+
+
+# Homebrew install or upgrade
+# Argument: brew name
 brew_install_or_upgrade() {
   if brew_is_installed "$1"; then
     if brew_is_upgradable "$1"; then
@@ -93,17 +99,6 @@ brew_tap() {
 brew_expand_alias() {
   brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
 }
-
-
-
-
-app_is_installed() {
-  local app_name
-  app_name=$(echo "$1" | cut -d'-' -f1)
-  find /Applications -iname "$app_name*" -maxdepth 1 | egrep '.*' > /dev/null
-}
-
-
 
 brew_launchctl_restart() {
   local name="$(brew_expand_alias "$1")"
@@ -154,7 +149,7 @@ brew_cask_install_or_upgrade() {
     echo "$1 is already installed, brew cask upgrade is not yet implemented"
     brew cask install --force "$@"
   else
-    brew cask install "$@"
+    brew_cask_install "$@"
   fi
 }
 
@@ -188,19 +183,40 @@ git_clone_or_pull() {
 
 # Install Homebrew
 if ! command -v brew >/dev/null; then
-  fancy_echo "Homebrew: Installing ..."
+  fancy_echo "Installing Homebrew ..."
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
     # shellcheck disable=SC2016
     append_to_file "$HOME/.zshrc" 'export PATH="/usr/local/bin:$PATH"'
 else
-  fancy_echo "Homebrew: already installed. Skipping ..."
+  fancy_echo "Homebrew already installed. Skipping ..."
 fi
+
+# Remove brew-cask since it is now installed as part of brew tap caskroom/cask.
+# See https://github.com/caskroom/homebrew-cask/releases/tag/v0.60.0
+if brew_is_installed 'brew-cask'; then
+  brew uninstall --force 'brew-cask'
+  brew untap caskroom/versions
+fi
+
+# Reset Homebrew
+brew cleanup
+rm -rf /usr/local/Cellar /usr/local/.git && brew cleanup
+
 
 # Update Homebrew formulas
 fancy_echo "Homebrew: Updating formulas ..."
 brew update
+
+fancy_echo "Homebrew: Verifying installation..."
+if brew doctor; then
+  fancy_echo "Homebrew: Your installation is good to go."
+else
+  fancy_echo "Your Homebrew installation reported some errors or warnings."
+  echo "If the warnings are related to Python, you can ignore them."
+  echo "Otherwise, review the Homebrew messages to see if any action is needed."
+fi
 
 
 fancy_echo "Homebrew: Tapping services (homebrew/services) ..."
@@ -211,8 +227,8 @@ fancy_echo "zsh: Installing Zshell ..."
 brew_install_or_upgrade 'zsh'
 brew_install_or_upgrade 'zsh-completions'
 
-fancy_echo "zsh: Installing OhMyZsh ..."
 # Install OhMyZsh
+fancy_echo "zsh: Installing OhMyZsh ..."
 curl -L http://install.ohmyz.sh | sh	
 
 fancy_echo "zsh: Adding Tab Completion for Homebrew"

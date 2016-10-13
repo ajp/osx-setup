@@ -4,8 +4,12 @@ tap 'homebrew/dupes'
 tap 'homebrew/versions'
 tap 'homebrew/bundle'
 
-# Git
+# Git Related
 brew 'git'
+
+tap 'fs/fstool'
+brew 'fs-tool'
+
 
 # Brews
 brew 'autojump'
@@ -68,7 +72,9 @@ cask 'opendns-updater'
 cask 'ssh-tunnel-manager'
 
 # Productivity and Focus
+cask 'droplr'
 cask 'focus'
+cask 'harvest'
 cask 'rescuetime'
 cask 'selfcontrol'
 
@@ -85,9 +91,9 @@ cask 'skype'
 cask 'zoomus'
 
 # Virtual Machine Things
+cask 'virtualbox'
 cask 'vagrant'
 cask 'vagrant-manager'
-cask 'virtualbox'
 cask 'vmware-fusion'
 
 # Web Development Tools
@@ -135,6 +141,7 @@ cask 'airfoil'
 cask 'airparrot'
 cask 'airserver'
 cask 'audiobookbinder'
+cask 'boom'
 cask 'calibre'
 cask 'gopro'
 cask 'handbrake'

@@ -1,0 +1,241 @@
+# General
+# =======
+# Set computer name (as done via System Preferences → Sharing)
+sudo scutil --set ComputerName "AJP MBP"
+sudo scutil --set HostName "AJP MBP"
+sudo scutil --set LocalHostName "AJP MBP"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "AJP MBP"
+
+# Restart automatically if the computer freezes
+sudo systemsetup -setrestartfreeze on
+
+# Check for software updates daily, not just once per week
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+
+#Enabling full keyboard access for all controls (e.g. enable Tab in modal dialogs
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+
+# Screen
+# ======
+
+# Save screenshots to the downlaods.
+defaults write com.apple.screencapture location "$HOME/Downloads/"
+
+# Bottom right screen corner → Start screen saver
+defaults write com.apple.dock wvous-br-corner -int 5
+defaults write com.apple.dock wvous-br-modifier -int 0
+
+# Sound
+# =====
+#Disable the Startup Chime
+#sudo nvram SystemAudioVolume=" "
+
+
+# Trackpad
+# ========
+
+# Trackpad: enable tap to click for this user and for the login screen
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+sudo defaults write com.apple.AppleMultitouchTrackpad Clicking 1
+
+#Secondary click
+defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+
+
+# Finder
+# ======
+
+# Finder: show all filename extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Finder: show status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+
+# Finder: show path bar
+defaults write com.apple.finder ShowPathbar -bool true
+
+# When performing a search, search the current folder by default
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Disable the warning when changing a file extension
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+# Disable the warning before emptying the Trash
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Use list view in all Finder windows by default
+# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+
+# Show the ~/Library folder
+chflags nohidden ~/Library
+
+# Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+
+
+
+# Enable the expand save panel by default
+# http://www.defaults-write.com/expand-save-panel-default/
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+# Use plain text as default format in TextEdit
+# http://www.defaults-write.com/plain-text-default-textedit/
+defaults write com.apple.TextEdit RichText -int 0
+
+# Reference:
+# https://gist.github.com/chris-79/25057b0ae4b833f602524ee0d18863e1
+# This sets a bunch of preferences without having to click everywhere
+
+# declare my US locale
+defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
+defaults write com.apple.systempreferences AppleIntlCustomFormat -dict-add "AppleIntlCustomLocale" "en_US"
+
+# date string formats
+defaults write NSGlobalDomain AppleICUDateFormatStrings -dict-add "1" "yyyy/MM/dd"
+defaults write NSGlobalDomain AppleICUDateFormatStrings -dict-add "2" "dd MMM y"
+defaults write NSGlobalDomain AppleICUDateFormatStrings -dict-add "3" "dd MMMM y"
+defaults write NSGlobalDomain AppleICUDateFormatStrings -dict-add "4" "EEEE, dd MMMM y"
+
+# 24-hour time is the only way to roll
+defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "1" "HH:mm"
+defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "2" "HH:mm:ss"
+defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "3" "HH:mm:ss z"
+defaults write NSGlobalDomain AppleICUTimeFormatStrings -dict-add "4" "HH:mm:ss zzzz"
+
+# also set this for the system preference
+defaults write com.apple.systempreferences AppleIntlCustomFormat -dict-add "AppleIntlCustomICUDictionary" "{'AppleICUDateFormatStrings'={'1'='yyyy/MM/dd';'2'='dd MMM y';'3'='dd MMMM y';'4'='EEEE, dd MMMM y';};'AppleICUTimeFormatStrings'={'1'='HH:mm';'2'='HH:mm:ss';'3'='HH:mm:ss z';'4'='HH:mm:ss zzzz';};}"
+
+# Expand 'Save As…' Dialog Boxes by Default
+defaults write -g NSNavPanelExpandedStateForSaveMode -boolean true
+
+# Appearance: Graphite
+defaults write -g 'AppleAquaColorVariant' -int 6
+
+# Use dark menu bar and Dock (Yosemite)
+defaults write .GlobalPreferences AppleInterfaceTheme Dark
+
+# Number of recent items: Applications: None
+/usr/bin/osascript -e 'tell application "System Events" to tell appearance preferences to set recent applications limit to 0'
+
+# Number of recent items: Documents: None
+/usr/bin/osascript -e 'tell application "System Events" to tell appearance preferences to set recent documents limit to 0'
+
+# Restore windows when quitting and re-opening apps: off
+defaults write -g 'NSQuitAlwaysKeepsWindows' -bool false
+
+# Translucent menu bar: off
+defaults write -g 'AppleEnableMenuBarTransparency' -bool false
+
+# Disable Dashboard
+defaults write com.apple.dashboard mcx-disabled -bool true
+
+# Hot corners
+# Possible values:
+# 0: no-op
+# 2: Mission Control
+# 3: Show application windows
+# 4: Desktop
+# 5: Start screen saver
+# 6: Disable screen saver
+# 7: Dashboard
+# 10: Put display to sleep
+# 11: Launchpad
+# 12: Notification Center
+# Top left screen corner → Start screen saver
+defaults write com.apple.dock wvous-tl-corner -int 5
+defaults write com.apple.dock wvous-tl-modifier -int 0
+# Top right screen corner → Desktop
+defaults write com.apple.dock wvous-tr-corner -int 4
+defaults write com.apple.dock wvous-tr-modifier -int 0
+# Bottom right screen corner → Mission Control
+defaults write com.apple.dock wvous-br-corner -int 2
+defaults write com.apple.dock wvous-br-modifier -int 0
+# Bottom left screen corner → nothing
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# Enable Tap-to-click For This User And For The Login Screen
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -bool true
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -bool true
+
+# Messages
+# Disable automatic emoji substitution (i.e. use plain text smileys)
+defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
+# Disable smart quotes as it’s annoying for messages that contain code
+defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
+
+# All Applications
+# Change Tabs With cmd-opt-arrow
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Select Next Tab" "@~\U2192"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Select Previous Tab" "@~\U2190"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Next Tab" "@~\U2192"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Previous Tab" "@~\U2190"
+# Full Screen With cmd-opt-up
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Enter Full Screen" "@~\U2191"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Exit Full Screen" "@~\U2191"
+# Set regular quotes
+defaults write NSGlobalDomain NSUserQuotesArray '("\"","\"","'","'")'
+
+# Display full posix path in OS X Finder title Bar
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+# Disable trackpad swipe between pages
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
+
+# Enable Firewall
+defaults write com.apple.alf globalstate -int 1
+# Enable stealth mode
+defaults write com.apple.alf stealthenabled -bool true
+
+# From <https://github.com/rtrouton/rtrouton_scripts/>
+IS_LAPTOP=`/usr/sbin/system_profiler SPHardwareDataType | grep "Model Identifier" | grep "Book"`
+if [[ "$IS_LAPTOP" != "" ]]; then
+  sudo pmset -b sleep 0 disksleep 0 displaysleep 30 halfdim 1
+  sudo pmset -c sleep 0 disksleep 0 displaysleep 30 halfdim 0
+else
+  sudo pmset sleep 0 disksleep 0 displaysleep 30 halfdim 0
+fi
+
+# Don't offer new disks for TimeMachine backup
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+# Prevent .DS_Store file creation over network connections
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+
+# Enable Text Selection in QuickLook
+defaults write com.apple.finder QLEnableTextSelection -bool true
+
+# Enable Show All File Extensions
+defaults write com.apple.finder AppleShowAllExtensions -bool true
+
+# Finder list view by default
+defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+
+# Stop the power button from putting your mac in Stand-by mode
+defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool no
+
+# Disable ‘Resume’ system-wide
+defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
+
+# Save to disk (not to iCloud) by default
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+
+# Enable AirDrop in a wired network and old Macs
+defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+
+# Make OS X screenshots without window shadows
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# Change the default location for screenshots
+defaults write com.apple.screencapture location ~/Downloads
+
+echo "You should probably restart for a lot of these to take effect."
+

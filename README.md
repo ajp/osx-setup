@@ -10,7 +10,10 @@ Additional ideas from 18F/laptop and monfresh/laptop who also based theirs on th
 * [18f/laptop](https://github.com/18F/laptop)
 * [monfresh/laptop](https://github.com/monfresh/laptop)
 * [Max OS X Setup Guide](http://sourabhbajaj.com/mac-setup/) [GitBook](https://github.com/sb2nov/mac-setup)
-* https://github.com/jonasrosland/osx-bootstrap
+* OSX Settings: https://github.com/jonasrosland/osx-bootstrap
+* OSX Settings: https://github.com/chris-79 / https://gist.github.com/chris-79/25057b0ae4b833f602524ee0d18863e1
+
+
 ### Notes
 
 * Script is currently compatible with OS X Yosemite.
